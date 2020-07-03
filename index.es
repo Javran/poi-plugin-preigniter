@@ -1,9 +1,13 @@
+import _ from 'lodash'
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import { reducer } from './store'
-import { expectFormationSelectionSelector } from './selectors'
+import {
+  expectFormationSelectionSelector,
+  gameScreenInfoSelector,
+} from './selectors'
 import { PTyp } from './ptyp'
 
 const { $ } = window
@@ -11,19 +15,26 @@ const { $ } = window
 /*
   TODO:
 
-  - properly wire through game screen width
   - support combined fleets
   - hide on less-than-4-ships case
   - match in game box (4 ships), or the combined fleet case.
 
  */
 
+const widthToHeight = w => _.round(w * 6 / 10)
+
 @connect(
-  state => ({expectFormationSelection: expectFormationSelectionSelector(state)})
+  state => ({
+    ...gameScreenInfoSelector(state),
+    expectFormationSelection: expectFormationSelectionSelector(state),
+  })
 )
 class FormationSelectionOverlay extends PureComponent {
   static propTypes = {
+    // connnected:
     expectFormationSelection: PTyp.bool.isRequired,
+    gameDisplayWidth: PTyp.number.isRequired,
+    gameOriginalWidth: PTyp.number.isRequired,
   }
 
   state = {
@@ -65,10 +76,14 @@ class FormationSelectionOverlay extends PureComponent {
   }
 
   render() {
-    const {expectFormationSelection} = this.props
+    const {
+      expectFormationSelection,
+      gameDisplayWidth,
+      gameOriginalWidth,
+    } = this.props
     const {gameTop, gameLeft} = this.state
     if (!this.gameView) return ''
-    const ratio = 800 / 1200
+    const ratio = gameDisplayWidth / gameOriginalWidth
     const offsetWithVanguard = [
       [261, 601], [261, 796], [261, 994],
       [499, 601], [499, 796], [499, 994],
@@ -77,8 +92,8 @@ class FormationSelectionOverlay extends PureComponent {
       <div
         className="preigniter-overlay"
         style={{
-          width: 800,
-          height: 480,
+          width: gameDisplayWidth,
+          height: widthToHeight(gameDisplayWidth),
           pointerEvents: 'none',
           position: 'absolute',
           left: gameLeft,

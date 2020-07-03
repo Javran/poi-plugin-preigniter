@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 import {
   extensionSelectorFactory,
   sortieMapIdSelector,
+  configSelector as poiConfigSelector,
 } from 'views/utils/selectors'
 
 import { initState } from './store'
@@ -25,8 +26,18 @@ const expectFormationSelectionSelector = createSelector(
     Boolean(sortieMapId) && isOnSortieScreen
 )
 
+const gameScreenInfoSelector = createSelector(poiConfigSelector, config => {
+  const webView = _.get(config, 'poi.webview')
+  const gameDisplayWidth = _.get(webView, 'width')
+  const gameOriginalWidth = _.get(webView, 'windowWidth')
+  if (!_.isInteger(gameDisplayWidth) || !_.isInteger(gameOriginalWidth)) {
+    return {gameDisplayWidth: 0, gameOriginalWidth: 0}
+  }
+  return {gameDisplayWidth, gameOriginalWidth}
+})
+
 export {
   onSortieScreenSelector,
   expectFormationSelectionSelector,
+  gameScreenInfoSelector,
 }
-
