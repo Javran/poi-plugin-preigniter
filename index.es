@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 const { $ } = window
 
-class FormationSelectionOverlayer extends PureComponent {
+class FormationSelectionOverlay extends PureComponent {
   state = {
     gameTop: 0,
     gameLeft: 0,
@@ -50,9 +50,9 @@ class FormationSelectionOverlayer extends PureComponent {
       [261, 601], [261, 796], [261, 994],
       [499, 601], [499, 796], [499, 994],
     ]
-    const ovl = (
+    const FSOverlay = (
       <div
-        className="preigniter-overlayer"
+        className="preigniter-overlay"
         style={{
           width: 800,
           height: 480,
@@ -71,8 +71,8 @@ class FormationSelectionOverlayer extends PureComponent {
                 position: 'absolute',
                 width: (141+4) * ratio,
                 height: (35+4) * ratio,
-                left: (x - 2) * ratio,
-                top: (y - 2) * ratio,
+                left: (x-2) * ratio,
+                top: (y-2) * ratio,
                 zIndex: 1,
               }}
             />)
@@ -81,13 +81,13 @@ class FormationSelectionOverlayer extends PureComponent {
       </div>
     )
     return ReactDOM.createPortal(
-      ovl,
+      FSOverlay,
       this.gameView
     )
   }
 }
 
-const reactClass = FormationSelectionOverlayer
+const reactClass = FormationSelectionOverlay
 
 const pluginDidLoad = () => {}
 const pluginWillUnload = () => {}
