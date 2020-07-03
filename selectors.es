@@ -61,6 +61,7 @@ const combinedFlagSelector = createSelector(
   }
 )
 
+// TODO: escape idx is not yet considered
 const sortieShipsCountSelector = createSelector(
   fleetsSelector,
   sortieSelector,

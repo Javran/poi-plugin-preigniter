@@ -7,8 +7,10 @@ import { reducer } from './store'
 import {
   expectFormationSelectionSelector,
   gameScreenInfoSelector,
+  formationTypeSelector,
 } from './selectors'
 import { PTyp } from './ptyp'
+import { boxGuidesInfo } from './box-guides'
 
 const { $ } = window
 
@@ -16,8 +18,6 @@ const { $ } = window
   TODO:
 
   - support combined fleets
-  - hide on less-than-4-ships case
-  - no diamond formation < 5 ships (single fleet)
   - match in game box (4 ships), or the combined fleet case.
   - there are still some cases where we expect a single fleet formation
     in a combined fleet map, which we haven't considered here.
@@ -33,6 +33,7 @@ const widthToHeight = w => _.round(w * 6 / 10)
   state => ({
     ...gameScreenInfoSelector(state),
     expectFormationSelection: expectFormationSelectionSelector(state),
+    formationType: formationTypeSelector(state),
   })
 )
 class FormationSelectionOverlay extends PureComponent {
@@ -41,6 +42,7 @@ class FormationSelectionOverlay extends PureComponent {
     expectFormationSelection: PTyp.bool.isRequired,
     gameDisplayWidth: PTyp.number.isRequired,
     gameOriginalWidth: PTyp.number.isRequired,
+    formationType: PTyp.string.isRequired,
   }
 
   state = {
@@ -86,14 +88,17 @@ class FormationSelectionOverlay extends PureComponent {
       expectFormationSelection,
       gameDisplayWidth,
       gameOriginalWidth,
+      formationType,
     } = this.props
     const {gameTop, gameLeft} = this.state
-    if (!this.gameView) return ''
+    if (
+      !expectFormationSelection ||
+      !this.gameView ||
+      !(formationType in boxGuidesInfo)
+    )
+      return ''
     const ratio = gameDisplayWidth / gameOriginalWidth
-    const offsetWithVanguard = [
-      [261, 601], [261, 796], [261, 994],
-      [499, 601], [499, 796], [499, 994],
-    ]
+    const btnSpecs = boxGuidesInfo[formationType]
     const FSOverlay = (
       <div
         className="preigniter-overlay"
@@ -104,20 +109,20 @@ class FormationSelectionOverlay extends PureComponent {
           position: 'absolute',
           left: gameLeft,
           top: gameTop,
-          opacity: expectFormationSelection ? 1 : 0,
           zIndex: 1,
         }}
       >
         {
-          offsetWithVanguard.map(([y,x]) => (
+          btnSpecs.map(({formation, x, y, width, height}) => (
             <div
+              key={formation}
               style={{
                 border: '2px solid purple',
                 position: 'absolute',
-                width: (141+4) * ratio,
-                height: (35+4) * ratio,
-                left: (x-2) * ratio,
-                top: (y-2) * ratio,
+                width: width * ratio + 4,
+                height: height * ratio + 4,
+                left: x * ratio - 2,
+                top: y * ratio - 2,
                 zIndex: 1,
               }}
             />)
