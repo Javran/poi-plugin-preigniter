@@ -1,10 +1,31 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+
 import { reducer } from './store'
+import { expectFormationSelectionSelector } from './selectors'
+import { PTyp } from './ptyp'
 
 const { $ } = window
 
+/*
+  TODO:
+
+  - properly wire through game screen width
+  - support combined fleets
+  - hide on less-than-4-ships case
+  - match in game box (4 ships), or the combined fleet case.
+
+ */
+
+@connect(
+  state => ({expectFormationSelection: expectFormationSelectionSelector(state)})
+)
 class FormationSelectionOverlay extends PureComponent {
+  static propTypes = {
+    expectFormationSelection: PTyp.bool.isRequired,
+  }
+
   state = {
     gameTop: 0,
     gameLeft: 0,
@@ -44,6 +65,7 @@ class FormationSelectionOverlay extends PureComponent {
   }
 
   render() {
+    const {expectFormationSelection} = this.props
     const {gameTop, gameLeft} = this.state
     if (!this.gameView) return ''
     const ratio = 800 / 1200
@@ -61,6 +83,7 @@ class FormationSelectionOverlay extends PureComponent {
           position: 'absolute',
           left: gameLeft,
           top: gameTop,
+          opacity: expectFormationSelection ? 1 : 0,
           zIndex: 1,
         }}
       >
