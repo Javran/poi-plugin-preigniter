@@ -1,0 +1,48 @@
+{
+  "name": "poi-plugin-preigniter",
+  "version": "1.0.0",
+  "description": "Experimental drawing on top of the game view.",
+  "main": "index.es",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint '**/*.es' 'test/**/.js' || true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Javran/poi-plugin-preigniter.git"
+  },
+  "author": {
+    "name": "Javran",
+    "url": "https://github.com/Javran"
+  },
+  "license": "MIT",
+  "poiPlugin": {
+    "title": "Preigniter",
+    "priority": 120,
+    "icon": "fire"
+  },
+  "bugs": {
+    "url": "https://github.com/Javran/poi-plugin-preigniter/issues"
+  },
+  "homepage": "https://github.com/Javran/poi-plugin-preigniter#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/register": "^7.0.0-beta.46",
+    "@babel/preset-stage-0": "^7.0.0-beta.46",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "mocha": "^5.1.1",
+    "path-extra": "^4.2.1"
+  },
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "subtender": "^0.14.0"
+  }
+}
