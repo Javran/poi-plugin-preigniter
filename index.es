@@ -33,7 +33,7 @@ class FormationSelectionOverlayer extends PureComponent {
        we actually don't care what are the changes,
        since those are made to the parent.
      */
-    const kanGameDiv = $('kan-game > div')
+    const kanGameDiv = this.gameView && this.gameView.querySelector('div')
     if (!kanGameDiv)
       return
     this.setState({
@@ -44,8 +44,7 @@ class FormationSelectionOverlayer extends PureComponent {
 
   render() {
     const {gameTop, gameLeft} = this.state
-    const kanGameView = $('kan-game')
-    if (!kanGameView) return ''
+    if (!this.gameView) return ''
     const ratio = 800 / 1200
     const offsetWithVanguard = [
       [261, 601], [261, 796], [261, 994],
@@ -83,7 +82,7 @@ class FormationSelectionOverlayer extends PureComponent {
     )
     return ReactDOM.createPortal(
       ovl,
-      kanGameView
+      this.gameView
     )
   }
 }
