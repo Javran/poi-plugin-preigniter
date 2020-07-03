@@ -17,8 +17,14 @@ const { $ } = window
 
   - support combined fleets
   - hide on less-than-4-ships case
+  - no diamond formation < 5 ships (single fleet)
   - match in game box (4 ships), or the combined fleet case.
+  - there are still some cases where we expect a single fleet formation
+    in a combined fleet map, which we haven't considered here.
 
+  Note:
+   - api_event_kind：イベント種別
+   0=非戦闘セル, 1=通常戦闘, 2=夜戦, 3=夜昼戦, 4=航空戦, 5=敵連合艦隊戦, 6=長距離空襲戦, 7=夜昼戦(対連合艦隊), 8=レーダー射撃
  */
 
 const widthToHeight = w => _.round(w * 6 / 10)
