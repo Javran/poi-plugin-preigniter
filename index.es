@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 
 const { $ } = window
 
-class FormationSelectionOverlayer extends Component {
+class FormationSelectionOverlayer extends PureComponent {
   state = {
     gameTop: 0,
     gameLeft: 0,
