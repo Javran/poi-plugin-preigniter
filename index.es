@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
+import { reducer } from './store'
 
 const { $ } = window
 
@@ -95,5 +96,6 @@ const pluginWillUnload = () => {}
 export {
   pluginDidLoad,
   pluginWillUnload,
+  reducer,
   reactClass,
 }
