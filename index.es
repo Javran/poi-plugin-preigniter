@@ -1,5 +1,3 @@
-import _ from 'lodash'
-import { remote } from 'electron'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
@@ -11,23 +9,11 @@ class FormationSelectionOverlayer extends Component {
     gameLeft: 0,
   }
 
-  gameView = null
-
-  handleResize = _entries => {
-    const kanGameDiv = $('kan-game > div')
-    if (!kanGameDiv)
-      return
-    const offset = {
-      top: kanGameDiv.offsetTop,
-      left: kanGameDiv.offsetLeft,
-    }
-    this.setState({
-      gameTop: kanGameDiv.offsetTop,
-      gameLeft: kanGameDiv.offsetLeft,
-    })
-  }
-
   componentDidMount = () => {
+    /*
+       For whatever reason, `kangame > div` doesn't trigger ResizeObserver,
+       so we have to put this on its parent, ergo this messy state.
+     */
     this.gameView = $('kan-game')
     this.resizeObserver = new ResizeObserver(this.handleResize)
     this.resizeObserver.observe(this.gameView)
@@ -38,15 +24,36 @@ class FormationSelectionOverlayer extends Component {
     this.gameView = null
   }
 
+  // Keeping track of root of the game view
+  gameView = null
+
+  handleResize = _entries => {
+    /*
+       All we need is a hint that something has changed,
+       we actually don't care what are the changes,
+       since those are made to the parent.
+     */
+    const kanGameDiv = $('kan-game > div')
+    if (!kanGameDiv)
+      return
+    this.setState({
+      gameTop: kanGameDiv.offsetTop,
+      gameLeft: kanGameDiv.offsetLeft,
+    })
+  }
+
   render() {
     const {gameTop, gameLeft} = this.state
     const kanGameView = $('kan-game')
     if (!kanGameView) return ''
     const ratio = 800 / 1200
-    const offsetWithVanguard = [[261, 601] , [261, 796] , [261, 994] , [499, 601] , [499, 796] , [499, 994]]
+    const offsetWithVanguard = [
+      [261, 601], [261, 796], [261, 994],
+      [499, 601], [499, 796], [499, 994],
+    ]
     const ovl = (
       <div
-        class="preigniter-overlayer"
+        className="preigniter-overlayer"
         style={{
           width: 800,
           height: 480,
