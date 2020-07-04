@@ -17,8 +17,6 @@ const { $ } = window
 /*
   TODO:
 
-  - support combined fleets
-  - match in game box (4 ships), or the combined fleet case.
   - there are still some cases where we expect a single fleet formation
     in a combined fleet map, which we haven't considered here.
 
@@ -117,7 +115,7 @@ class FormationSelectionOverlay extends PureComponent {
             <div
               key={formation}
               style={{
-                border: '2px solid purple',
+                border: '2px solid cyan',
                 position: 'absolute',
                 width: width * ratio + 4,
                 height: height * ratio + 4,

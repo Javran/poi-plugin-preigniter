@@ -3,8 +3,15 @@
 const boxGuidesInfo = (() => {
   const btnSingle = obj => ({
     ...obj,
-    width: 141, height: 35,
+    width: 140, height: 34,
   })
+
+  /* eslint-disable */
+  const _btnCombined = obj => ({
+    ...obj,
+    width: 200, height: 35,
+  })
+  /* eslint-enable */
 
   const firstLineWithVanguard = [
     {
