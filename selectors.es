@@ -21,6 +21,7 @@ const mkExtPropSelector = propName =>
   createSelector(extSelector, ext => ext[propName])
 
 const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
+const nextIsNightStartSelector = mkExtPropSelector('nextIsNightStartSelector')
 
 const expectFormationSelectionSelector = createSelector(
   sortieMapIdSelector,
@@ -92,8 +93,9 @@ const formationTypeSelector = createSelector(
   combinedFlagSelector,
   vanguardPresenceSelector,
   sortieShipsCountSelector,
-  (combinedFlag, hasVanguard, sortieShipsCount) => {
-    if (combinedFlag > 0)
+  nextIsNightStartSelector,
+  (combinedFlag, hasVanguard, sortieShipsCount, nextIsNightStart) => {
+    if (combinedFlag > 0 && !nextIsNightStart)
       return 'Combined'
     if (sortieShipsCount < 4)
       return 'None'
@@ -105,6 +107,7 @@ const formationTypeSelector = createSelector(
 
 export {
   onSortieScreenSelector,
+  nextIsNightStartSelector,
   expectFormationSelectionSelector,
   gameScreenInfoSelector,
   eventPresenceSelector,
