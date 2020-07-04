@@ -7,6 +7,7 @@ import {
   constSelector,
   sortieSelector,
   fleetsSelector,
+  fcdSelector,
 } from 'views/utils/selectors'
 
 import { initState } from './store'
@@ -105,6 +106,36 @@ const formationTypeSelector = createSelector(
   }
 )
 
+const spotHistorySelector = createSelector(
+  sortieSelector,
+  sortie => _.get(sortie, 'spotHistory', [])
+)
+
+// Selects an Object keyed by spotId, with value being an array of two elements,
+// indicating two ends. null if the map cannot be found.
+const currentRouteMapSelector = createSelector(
+  sortieMapIdSelector,
+  fcdSelector,
+  (sortieMapIdStr, fcd) => {
+    const mapId = Number(sortieMapIdStr)
+    if (!_.isInteger(mapId) || !mapId)
+      return null
+    const mapNo = mapId % 10
+    const areaNo = _.floor(mapId / 10)
+    const mapKey = `${areaNo}-${mapNo}`
+    return _.get(fcd, ['map', mapKey, 'route'], null)
+  }
+)
+
+const getSpotNameFuncSelector = createSelector(
+  currentRouteMapSelector,
+  routeMap =>
+    spotId =>
+      // either we have a proper spot name,
+      // or we use spotId with a '?' in the end.
+      _.get(routeMap, [spotId, 1]) || `${spotId}?`
+)
+
 export {
   onSortieScreenSelector,
   nextIsNightStartSelector,
@@ -113,4 +144,6 @@ export {
   eventPresenceSelector,
   vanguardPresenceSelector,
   formationTypeSelector,
+  spotHistorySelector,
+  getSpotNameFuncSelector,
 }

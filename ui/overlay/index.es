@@ -7,7 +7,7 @@ import {
 } from '@x/selectors'
 import { PTyp } from '@x/ptyp'
 import { FormationSelectionGuides } from './formation-selection-guides'
-
+import { RouteView } from './route-view'
 
 const { $ } = window
 
@@ -101,6 +101,7 @@ class OverlayRoot extends PureComponent {
         }}
       >
         <FormationSelectionGuides />
+        <RouteView />
       </div>
     )
     return ReactDOM.createPortal(
