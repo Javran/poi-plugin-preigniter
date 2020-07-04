@@ -23,13 +23,7 @@ const mkExtPropSelector = propName =>
 
 const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
 const nextIsNightStartSelector = mkExtPropSelector('nextIsNightStartSelector')
-
-const expectFormationSelectionSelector = createSelector(
-  sortieMapIdSelector,
-  onSortieScreenSelector,
-  (sortieMapId, isOnSortieScreen) =>
-    Boolean(sortieMapId) && isOnSortieScreen
-)
+const expectFormationSelectionSelector = mkExtPropSelector('expectFormationSelection')
 
 const gameScreenInfoSelector = createSelector(poiConfigSelector, config => {
   const webView = _.get(config, 'poi.webview')

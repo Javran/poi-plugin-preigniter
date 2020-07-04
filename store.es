@@ -5,7 +5,9 @@ import { store } from 'views/create-store'
 const initState = {
   // whether we are on a sortie screen (formation selection might present)
   onSortieScreen: false,
+  expectFormationSelection: false,
   // if true, forces single fleet overlay.
+  // TOOD: rename to "forceSingleFleet"
   nextIsNightStart: false,
 }
 
@@ -23,7 +25,13 @@ const reducer = (state = initState, action) => {
       '@@Response/kcsapi/api_req_combined_battle/battleresult',
     ].indexOf(action.type) !== -1
   ) {
-    return { ...state, onSortieScreen: false }
+    // returning to port or right after a game reload.
+    return {
+      ...state,
+      onSortieScreen: false,
+      expectFormationSelection: false,
+      nextIsNightStart: false,
+    }
   }
 
   if (
@@ -67,7 +75,9 @@ const reducer = (state = initState, action) => {
     case 10: // 10=泊地
       return {
         ...state,
-        onSortieScreen: false,
+        onSortieScreen: true,
+        expectFormationSelection: false,
+        nextIsNightStart: false,
       }
     default:
     }
@@ -75,7 +85,9 @@ const reducer = (state = initState, action) => {
     case 0: // 0=非戦闘セル, api_event_id=7(航空戦)時は0=航空偵察
       return {
         ...state,
-        onSortieScreen: false,
+        onSortieScreen: true,
+        expectFormationSelection: false,
+        nextIsNightStart: false,
       }
     case 2:
     case 3:
@@ -84,28 +96,41 @@ const reducer = (state = initState, action) => {
       // TODO: verify this on combined fleets
       return {
         ...state,
-        nextIsNightStart: true,
         onSortieScreen: true,
+        expectFormationSelection: true,
+        nextIsNightStart: true,
+
       }
     default:
       return {
         ...state,
-        nextIsNightStart: false,
         onSortieScreen: true,
+        expectFormationSelection: true,
+        nextIsNightStart: false,
       }
     }
   }
 
   if (action.type.startsWith('@@Response/kcsapi')) {
     if (action.type.indexOf('kcsapi/api_req_sortie') && action.type.endsWith('battle')) {
-      return { ...state, onSortieScreen: false }
+      return {
+        ...state,
+        onSortieScreen: false,
+        expectFormationSelection: false,
+        nextIsNightStart: false,
+      }
     }
     // at this point we have already handled all "battleresult" requests so it's relatively safe
     // to just look at prefix to determine whether we are in a battle.
     if (action.type.startsWith('@@Response/kcsapi/api_req_combined_battle/')
       && action.type.startsWith('@@Response/kcsapi/api_req_battle_midnight/')
     ) {
-      return { ...state, onSortieScreen: false }
+      return {
+        ...state,
+        onSortieScreen: false,
+        expectFormationSelection: false,
+        nextIsNightStart: false,
+      }
     }
   }
 
@@ -124,7 +149,12 @@ const actionCreators = {
 window.preigniterForceShow = () => {
   store.dispatch({
     type: '@poi-plugin-preigniter@Modify',
-    modifier: obj => ({...obj, nextIsNightStart: false, onSortieScreen: true}),
+    modifier: obj => ({
+      ...obj,
+      nextIsNightStart: false,
+      onSortieScreen: true,
+      expectFormationSelection: true,
+    }),
   })
 }
 
