@@ -3,54 +3,54 @@
 const boxGuidesInfo = (() => {
   const btnSingle = obj => ({
     ...obj,
-    width: 140, height: 34,
+    width: 144, height: 38,
   })
 
   /* eslint-disable */
   const _btnCombined = obj => ({
     ...obj,
-    width: 200, height: 35,
+    width: 204, height: 39,
   })
   /* eslint-enable */
 
   const firstLineWithVanguard = [
     {
       formation: 'LineAhead',
-      x: 700, y: 261,
+      x: 698, y: 259,
     },
     {
       formation: 'DoubleLine',
-      x: 896, y: 261,
+      x: 894, y: 259,
     },
   ]
 
   const firstLineWithDiamondWithVanguard = [
     {
       formation: 'LineAhead',
-      x: 601, y: 261,
+      x: 599, y: 259,
     },
     {
       formation: 'DoubleLine',
-      x: 796, y: 261,
+      x: 794, y: 259,
     },
     {
       formation: 'Diamond',
-      x: 994, y: 261,
+      x: 992, y: 259,
     },
   ]
 
   const secondLineWithVanguard = [
     {
       formation: 'Echelon',
-      x: 601, y: 499,
+      x: 599, y: 497,
     },
     {
       formation: 'Vanguard',
-      x: 796, y: 499,
+      x: 794, y: 497,
     },
     {
       formation: 'LineAbreast',
-      x: 994, y: 499,
+      x: 992, y: 497,
     },
   ]
 

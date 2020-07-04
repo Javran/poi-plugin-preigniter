@@ -104,12 +104,13 @@ class FormationSelectionOverlay extends PureComponent {
             <div
               key={formation}
               style={{
+                boxSizing: 'border-box',
                 border: '2px solid cyan',
                 position: 'absolute',
-                width: width * ratio + 4,
-                height: height * ratio + 4,
-                left: x * ratio - 2,
-                top: y * ratio - 2,
+                width: width * ratio,
+                height: height * ratio,
+                left: x * ratio,
+                top: y * ratio,
                 zIndex: 1,
               }}
             />)
