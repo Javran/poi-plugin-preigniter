@@ -90,8 +90,10 @@ class FormationSelectionOverlay extends PureComponent {
       <div
         className="preigniter-overlay"
         style={{
-          width: gameDisplayWidth,
-          height: widthToHeight(gameDisplayWidth),
+          transform: `scale(${ratio})`,
+          transformOrigin: '0 0',
+          width: gameOriginalWidth,
+          height: widthToHeight(gameOriginalWidth),
           pointerEvents: 'none',
           position: 'absolute',
           left: gameLeft,
@@ -100,17 +102,14 @@ class FormationSelectionOverlay extends PureComponent {
         }}
       >
         {
-          btnSpecs.map(({formation, x, y, width, height}) => (
+          btnSpecs.map(({formation, x: left, y: top, width, height}) => (
             <div
               key={formation}
               style={{
                 boxSizing: 'border-box',
-                border: '2px solid cyan',
+                border: '3px solid cyan',
                 position: 'absolute',
-                width: width * ratio,
-                height: height * ratio,
-                left: x * ratio,
-                top: y * ratio,
+                left, top, width, height,
                 zIndex: 1,
               }}
             />)

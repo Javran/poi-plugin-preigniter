@@ -119,6 +119,15 @@ const actionCreators = {
   }),
 }
 
+// force the formation selection to appear.
+// note that this only works during a sortie (as we do check sortieMapId.
+window.preigniterForceShow = () => {
+  store.dispatch({
+    type: '@poi-plugin-preigniter@Modify',
+    modifier: obj => ({...obj, nextIsNightStart: false, onSortieScreen: true}),
+  })
+}
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actionCreators, dispatch)
 
