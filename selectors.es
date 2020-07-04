@@ -22,7 +22,7 @@ const mkExtPropSelector = propName =>
   createSelector(extSelector, ext => ext[propName])
 
 const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
-const nextIsNightStartSelector = mkExtPropSelector('nextIsNightStartSelector')
+const forceSingleFleetSelector = mkExtPropSelector('forceSingleFleetSelector')
 const expectFormationSelectionSelector = mkExtPropSelector('expectFormationSelection')
 
 const gameScreenInfoSelector = createSelector(poiConfigSelector, config => {
@@ -88,9 +88,9 @@ const formationTypeSelector = createSelector(
   combinedFlagSelector,
   vanguardPresenceSelector,
   sortieShipsCountSelector,
-  nextIsNightStartSelector,
-  (combinedFlag, hasVanguard, sortieShipsCount, nextIsNightStart) => {
-    if (combinedFlag > 0 && !nextIsNightStart)
+  forceSingleFleetSelector,
+  (combinedFlag, hasVanguard, sortieShipsCount, forceSingleFleet) => {
+    if (combinedFlag > 0 && !forceSingleFleet)
       return 'Combined'
     if (sortieShipsCount < 4)
       return 'None'
@@ -132,7 +132,7 @@ const getSpotNameFuncSelector = createSelector(
 
 export {
   onSortieScreenSelector,
-  nextIsNightStartSelector,
+  forceSingleFleetSelector,
   expectFormationSelectionSelector,
   gameScreenInfoSelector,
   eventPresenceSelector,

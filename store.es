@@ -8,7 +8,7 @@ const initState = {
   expectFormationSelection: false,
   // if true, forces single fleet overlay.
   // TOOD: rename to "forceSingleFleet"
-  nextIsNightStart: false,
+  forceSingleFleet: false,
 }
 
 const reducer = (state = initState, action) => {
@@ -30,7 +30,7 @@ const reducer = (state = initState, action) => {
       ...state,
       onSortieScreen: false,
       expectFormationSelection: false,
-      nextIsNightStart: false,
+      forceSingleFleet: false,
     }
   }
 
@@ -77,7 +77,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: true,
         expectFormationSelection: false,
-        nextIsNightStart: false,
+        forceSingleFleet: false,
       }
     default:
     }
@@ -87,7 +87,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: true,
         expectFormationSelection: false,
-        nextIsNightStart: false,
+        forceSingleFleet: false,
       }
     case 2:
     case 3:
@@ -98,7 +98,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: true,
         expectFormationSelection: true,
-        nextIsNightStart: true,
+        forceSingleFleet: true,
 
       }
     default:
@@ -106,7 +106,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: true,
         expectFormationSelection: true,
-        nextIsNightStart: false,
+        forceSingleFleet: false,
       }
     }
   }
@@ -117,7 +117,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: false,
         expectFormationSelection: false,
-        nextIsNightStart: false,
+        forceSingleFleet: false,
       }
     }
     // at this point we have already handled all "battleresult" requests so it's relatively safe
@@ -129,7 +129,7 @@ const reducer = (state = initState, action) => {
         ...state,
         onSortieScreen: false,
         expectFormationSelection: false,
-        nextIsNightStart: false,
+        forceSingleFleet: false,
       }
     }
   }
@@ -151,7 +151,7 @@ window.preigniterForceShow = () => {
     type: '@poi-plugin-preigniter@Modify',
     modifier: obj => ({
       ...obj,
-      nextIsNightStart: false,
+      forceSingleFleet: false,
       onSortieScreen: true,
       expectFormationSelection: true,
     }),
