@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, {PureComponent} from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
@@ -14,7 +13,8 @@ import { boxGuidesInfo } from './box-guides'
 
 const { $ } = window
 
-const widthToHeight = w => _.round(w * 6 / 10)
+const GAME_ORIGINAL_WIDTH = 1200
+const GAME_ORIGINAL_HEIGHT = 720
 
 @connect(
   state => ({
@@ -79,12 +79,19 @@ class FormationSelectionOverlay extends PureComponent {
     } = this.props
     const {gameTop, gameLeft} = this.state
     if (
+      /*
+         Don't show up if original width breaks the assumption.
+         we could try to compute new scaling factor
+         but I don't the effort is worth it - likely many other things
+         will require adjustment prior to this anyways.
+       */
+      gameOriginalWidth !== GAME_ORIGINAL_WIDTH ||
       !expectFormationSelection ||
       !this.gameView ||
       !(formationType in boxGuidesInfo)
     )
       return ''
-    const ratio = gameDisplayWidth / gameOriginalWidth
+    const ratio = gameDisplayWidth / GAME_ORIGINAL_WIDTH
     const btnSpecs = boxGuidesInfo[formationType]
     const FSOverlay = (
       <div
@@ -92,8 +99,8 @@ class FormationSelectionOverlay extends PureComponent {
         style={{
           transform: `scale(${ratio})`,
           transformOrigin: '0 0',
-          width: gameOriginalWidth,
-          height: widthToHeight(gameOriginalWidth),
+          width: GAME_ORIGINAL_WIDTH,
+          height: GAME_ORIGINAL_HEIGHT,
           pointerEvents: 'none',
           position: 'absolute',
           left: gameLeft,

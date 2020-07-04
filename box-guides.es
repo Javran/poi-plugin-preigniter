@@ -1,4 +1,10 @@
-// Compute position and size of guiding boxes.
+/*
+
+  Compute position and size of guiding boxes.
+
+  Note that this module assumes game screen of 1200 x 720
+
+ */
 
 const boxGuidesInfo = (() => {
   const btnSingle = obj => ({
