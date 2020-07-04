@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {FormationSelectionOverlay} from './overlay'
+import { OverlayRoot } from './overlay'
 
 class PreigniterMain extends PureComponent {
   render() {
@@ -15,7 +15,7 @@ class PreigniterMain extends PureComponent {
         >
           Preigniter, all systems green.
         </div>
-        <FormationSelectionOverlay />
+        <OverlayRoot />
       </div>
     )
   }

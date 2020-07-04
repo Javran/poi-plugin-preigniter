@@ -3,32 +3,30 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import {
-  expectFormationSelectionSelector,
   gameScreenInfoSelector,
-  formationTypeSelector,
 } from '../../selectors'
 import { PTyp } from '../../ptyp'
-import { boxGuidesInfo } from '../../box-guides'
+import { FormationSelectionGuides } from './formation-selection-guides'
+
 
 const { $ } = window
 
 const GAME_ORIGINAL_WIDTH = 1200
 const GAME_ORIGINAL_HEIGHT = 720
 
-@connect(
-  state => ({
-    ...gameScreenInfoSelector(state),
-    expectFormationSelection: expectFormationSelectionSelector(state),
-    formationType: formationTypeSelector(state),
-  })
-)
-class FormationSelectionOverlay extends PureComponent {
+/*
+  This component serves as root of all overlays.
+  it renders the overlay and attach it on top of the game screen,
+  does all heavylifting of handling window resize and scaling.
+  All children components can assume the standard game screen size
+  1200 x 720.
+ */
+@connect(gameScreenInfoSelector)
+class OverlayRoot extends PureComponent {
   static propTypes = {
     // connnected:
-    expectFormationSelection: PTyp.bool.isRequired,
     gameDisplayWidth: PTyp.number.isRequired,
     gameOriginalWidth: PTyp.number.isRequired,
-    formationType: PTyp.string.isRequired,
   }
 
   state = {
@@ -71,10 +69,8 @@ class FormationSelectionOverlay extends PureComponent {
 
   render() {
     const {
-      expectFormationSelection,
       gameDisplayWidth,
       gameOriginalWidth,
-      formationType,
     } = this.props
     const {gameTop, gameLeft} = this.state
     if (
@@ -85,16 +81,13 @@ class FormationSelectionOverlay extends PureComponent {
          will require adjustment prior to this anyways.
        */
       gameOriginalWidth !== GAME_ORIGINAL_WIDTH ||
-      !expectFormationSelection ||
-      !this.gameView ||
-      !(formationType in boxGuidesInfo)
+      !this.gameView
     )
       return ''
     const ratio = gameDisplayWidth / GAME_ORIGINAL_WIDTH
-    const btnSpecs = boxGuidesInfo[formationType]
-    const FSOverlay = (
+    const OverlayRendered = (
       <div
-        className="preigniter-overlay"
+        className="preigniter-overlay-root"
         style={{
           transform: `scale(${ratio})`,
           transformOrigin: '0 0',
@@ -107,29 +100,16 @@ class FormationSelectionOverlay extends PureComponent {
           zIndex: 1,
         }}
       >
-        {
-          btnSpecs.map(({formation, x: left, y: top, width, height}) => (
-            <div
-              key={formation}
-              style={{
-                boxSizing: 'border-box',
-                border: '3px solid cyan',
-                position: 'absolute',
-                left, top, width, height,
-                zIndex: 1,
-              }}
-            />)
-          )
-        }
+        <FormationSelectionGuides />
       </div>
     )
     return ReactDOM.createPortal(
-      FSOverlay,
+      OverlayRendered,
       this.gameView
     )
   }
 }
 
 export {
-  FormationSelectionOverlay,
+  OverlayRoot,
 }
