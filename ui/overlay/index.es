@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import {
   gameScreenInfoSelector,
-} from '../../selectors'
-import { PTyp } from '../../ptyp'
+} from '@x/selectors'
+import { PTyp } from '@x/ptyp'
 import { FormationSelectionGuides } from './formation-selection-guides'
 
 

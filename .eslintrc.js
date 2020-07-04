@@ -78,6 +78,12 @@ module.exports = {
         'extensions': ['.js', '.jsx', '.es'],
         'paths': [__dirname],
       },
+      alias: {
+        map: [
+          ["@x", '.'],
+        ],
+        extensions: ['.js', '.jsx', '.es'],
+      }
     },
     'import/core-modules': [
       'bluebird',

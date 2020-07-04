@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import {
   expectFormationSelectionSelector,
   formationTypeSelector,
-} from '../../selectors'
-import { PTyp } from '../../ptyp'
-import { boxGuidesInfo } from '../../box-guides'
+} from '@x/selectors'
+import { PTyp } from '@x/ptyp'
+import { boxGuidesInfo } from '@x/box-guides'
 
 @connect(
   state => ({
