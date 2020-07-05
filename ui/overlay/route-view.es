@@ -53,7 +53,7 @@ class RouteView extends PureComponent {
                       isLastElement ? {
                         fontWeight: 'bold',
                         fontSize: '1.5em',
-                        color: 'gold',
+                        color: 'magenta',
                       } : {
                         color: '#AAA',
                       }
