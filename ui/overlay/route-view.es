@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, {PureComponent} from 'react'
 import { connect } from 'react-redux'
 
@@ -14,6 +13,7 @@ import { PTyp } from '@x/ptyp'
     spotHistory: spotHistorySelector(state),
     getSpotName: getSpotNameFuncSelector(state),
     onSortieScreen: onSortieScreenSelector(state),
+
   })
 )
 class RouteView extends PureComponent {
@@ -32,13 +32,53 @@ class RouteView extends PureComponent {
       <div
         style={{
           position: 'absolute',
+          fontFamily: 'monospace',
           fontSize: '2em',
-          bottom: 10,
+          bottom: 15,
           right: 160,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'baseline',
         }}
       >
         {
-          _.join(spotHistory.map(getSpotName), ' - ')
+          spotHistory.map((spotId, ind) => {
+            const isLastElement = ind === spotHistory.length - 1
+            return (
+              <>
+                <div
+                  style={{
+                    fontFamily: 'monospace',
+                    ...(
+                      isLastElement ? {
+                        fontWeight: 'bold',
+                        fontSize: '1.5em',
+                        color: 'gold',
+                      } : {
+                        color: '#AAA',
+                      }
+                    ),
+                  }}
+                  key={`spot-${spotId}`}>
+                  {getSpotName(spotId)}
+                </div>
+                {
+                  !isLastElement && (
+                    <div
+                      style={{
+                        fontFamily: 'monospace',
+                        color: '#AAA',
+                        padding: '0 .4em',
+                      }}
+                      key={`sep-${spotId}`}
+                    >
+                      -
+                    </div>
+                  )
+                }
+              </>
+            )
+          })
         }
       </div>
     )

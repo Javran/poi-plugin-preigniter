@@ -7,7 +7,6 @@ const initState = {
   onSortieScreen: false,
   expectFormationSelection: false,
   // if true, forces single fleet overlay.
-  // TOOD: rename to "forceSingleFleet"
   forceSingleFleet: false,
 }
 

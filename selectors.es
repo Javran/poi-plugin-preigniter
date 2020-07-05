@@ -130,6 +130,11 @@ const getSpotNameFuncSelector = createSelector(
       _.get(routeMap, [spotId, 1]) || `${spotId}?`
 )
 
+const poiZoomFactorSelector = createSelector(
+  poiConfigSelector,
+  config => _.get(config, ['poi','appearance','zoom'], 1)
+)
+
 export {
   onSortieScreenSelector,
   forceSingleFleetSelector,
@@ -140,4 +145,5 @@ export {
   formationTypeSelector,
   spotHistorySelector,
   getSpotNameFuncSelector,
+  poiZoomFactorSelector,
 }
