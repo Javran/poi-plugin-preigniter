@@ -61,7 +61,12 @@ const combinedFlagSelector = createSelector(
   }
 )
 
-// TODO: escape idx is not yet considered
+/*
+  TODO: escape idx is not yet considered
+  Note that escaping is a bit more involved that I thought previously:
+  in the case of combined fleet, formation used should completely determined by second fleet,
+  rather than the whole fleet, we'll need to take into account of that.
+ */
 const sortieShipsCountSelector = createSelector(
   fleetsSelector,
   sortieSelector,
