@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 
 import {
   gameScreenInfoSelector,
-  poiZoomFactorSelector,
 } from '@x/selectors'
 import { PTyp } from '@x/ptyp'
 import { FormationSelectionGuides } from './formation-selection-guides'
@@ -22,18 +21,12 @@ const GAME_ORIGINAL_HEIGHT = 720
   All children components can assume the standard game screen size
   1200 x 720.
  */
-@connect(
-  state => ({
-    zoomFactor: poiZoomFactorSelector(state),
-    ...gameScreenInfoSelector(state),
-  }),
-)
+@connect(gameScreenInfoSelector)
 class OverlayRoot extends PureComponent {
   static propTypes = {
     // connnected:
     gameDisplayWidth: PTyp.number.isRequired,
     gameOriginalWidth: PTyp.number.isRequired,
-    zoomFactor: PTyp.number.isRequired,
   }
 
   state = {
@@ -78,7 +71,6 @@ class OverlayRoot extends PureComponent {
     const {
       gameDisplayWidth,
       gameOriginalWidth,
-      zoomFactor,
     } = this.props
     const {gameTop, gameLeft} = this.state
     if (
@@ -92,7 +84,7 @@ class OverlayRoot extends PureComponent {
       !this.gameView
     )
       return ''
-    const ratio = gameDisplayWidth / GAME_ORIGINAL_WIDTH / zoomFactor
+    const ratio = gameDisplayWidth / GAME_ORIGINAL_WIDTH
     const OverlayRendered = (
       <div
         className="preigniter-overlay-root"

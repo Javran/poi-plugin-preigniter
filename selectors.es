@@ -8,6 +8,7 @@ import {
   sortieSelector,
   fleetsSelector,
   fcdSelector,
+  layoutSelector,
 } from 'views/utils/selectors'
 
 import { initState } from './store'
@@ -25,15 +26,18 @@ const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
 const forceSingleFleetSelector = mkExtPropSelector('forceSingleFleetSelector')
 const expectFormationSelectionSelector = mkExtPropSelector('expectFormationSelection')
 
-const gameScreenInfoSelector = createSelector(poiConfigSelector, config => {
-  const webView = _.get(config, 'poi.webview')
-  const gameDisplayWidth = _.get(webView, 'width')
-  const gameOriginalWidth = _.get(webView, 'windowWidth')
-  if (!_.isInteger(gameDisplayWidth) || !_.isInteger(gameOriginalWidth)) {
-    return {gameDisplayWidth: 0, gameOriginalWidth: 0}
+const gameScreenInfoSelector = createSelector(
+  poiConfigSelector,
+  layoutSelector,
+  (config, layout) => {
+    const gameDisplayWidth = _.get(layout, ['webview' ,'width'])
+    const gameOriginalWidth = _.get(config, ['poi', 'webview', 'windowWidth'])
+    if (!_.isFinite(gameDisplayWidth) || !_.isFinite(gameOriginalWidth)) {
+      return {gameDisplayWidth: 0, gameOriginalWidth: 0}
+    }
+    return {gameDisplayWidth, gameOriginalWidth}
   }
-  return {gameDisplayWidth, gameOriginalWidth}
-})
+)
 
 /*
   The earliest downloadable map is for world 42,
@@ -130,11 +134,6 @@ const getSpotNameFuncSelector = createSelector(
       _.get(routeMap, [spotId, 1]) || `${spotId}?`
 )
 
-const poiZoomFactorSelector = createSelector(
-  poiConfigSelector,
-  config => _.get(config, ['poi','appearance','zoom'], 1)
-)
-
 export {
   onSortieScreenSelector,
   forceSingleFleetSelector,
@@ -145,5 +144,4 @@ export {
   formationTypeSelector,
   spotHistorySelector,
   getSpotNameFuncSelector,
-  poiZoomFactorSelector,
 }

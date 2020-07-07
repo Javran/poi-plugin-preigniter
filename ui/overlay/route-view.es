@@ -13,7 +13,6 @@ import { PTyp } from '@x/ptyp'
     spotHistory: spotHistorySelector(state),
     getSpotName: getSpotNameFuncSelector(state),
     onSortieScreen: onSortieScreenSelector(state),
-
   })
 )
 class RouteView extends PureComponent {
