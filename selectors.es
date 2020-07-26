@@ -23,7 +23,7 @@ const mkExtPropSelector = propName =>
   createSelector(extSelector, ext => ext[propName])
 
 const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
-const forceSingleFleetSelector = mkExtPropSelector('forceSingleFleetSelector')
+const forceSingleFleetSelector = mkExtPropSelector('forceSingleFleet')
 const expectFormationSelectionSelector = mkExtPropSelector('expectFormationSelection')
 
 const gameScreenInfoSelector = createSelector(
