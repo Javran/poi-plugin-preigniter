@@ -13,7 +13,7 @@ const boxGuidesInfo = (() => {
   })
 
   /* eslint-disable */
-  const _btnCombined = obj => ({
+  const btnCombined = obj => ({
     ...obj,
     width: 204, height: 39,
   })
@@ -68,13 +68,32 @@ const boxGuidesInfo = (() => {
     ...firstLineWithVanguard,
     ...secondLineWithVanguard,
   ].map(btnSingle)
+
+  const Combined = [
+    {
+      formation: 'Cruising Formation 1',
+      x: 646, y: 242,
+    },
+    {
+      formation: 'Cruising Formation 2',
+      x: 893, y: 242,
+    },
+    {
+      formation: 'Cruising Formation 3',
+      x: 646, y: 448,
+    },
+    {
+      formation: 'Cruising Formation 4',
+      x: 893, y: 448,
+    },
+  ].map(btnCombined)
   return {
     // None is left undefined intentionally.
     // TODO: Single
     // TODO: SingleHasDiamond
     SingleHasVanguard,
     SingleHasDiamondHasVanguard,
-    // TODO: Combined
+    Combined,
   }
 })()
 
