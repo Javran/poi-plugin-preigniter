@@ -121,8 +121,8 @@ const reducer = (state = initState, action) => {
     }
     // at this point we have already handled all "battleresult" requests so it's relatively safe
     // to just look at prefix to determine whether we are in a battle.
-    if (action.type.startsWith('@@Response/kcsapi/api_req_combined_battle/')
-      && action.type.startsWith('@@Response/kcsapi/api_req_battle_midnight/')
+    if (action.type.startsWith('@@Response/kcsapi/api_req_combined_battle/') ||
+        action.type.startsWith('@@Response/kcsapi/api_req_battle_midnight/')
     ) {
       return {
         ...state,
