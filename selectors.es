@@ -9,6 +9,7 @@ import {
   fleetsSelector,
   fcdSelector,
   layoutSelector,
+  fleetShipsDataWithEscapeSelectorFactory,
 } from 'views/utils/selectors'
 
 import { initState } from './store'
@@ -62,17 +63,35 @@ const combinedFlagSelector = createSelector(
 )
 
 /*
-  TODO: escape idx is not yet considered
-  Note that escaping is a bit more involved that I thought previously:
-  in the case of combined fleet, formation used should completely determined by second fleet,
-  rather than the whole fleet, we'll need to take into account of that.
+  The type of the return value changes depending on whether this is a combined fleet:
+
+  - for combined fleet, an array of exactly 2 integers is returned,
+    counting # of ships in main and escort fleet (with escape idx taken into account)
+
+  - for single fleet, an integer is returned
+     counting the # of ships (with escape idx taken into account)
  */
 const sortieShipsCountSelector = createSelector(
   fleetsSelector,
   sortieSelector,
-  (fleets, sortie) => {
-    if (fleets.length !== sortie.sortieStatus.length)
-      return 0
+  combinedFlagSelector,
+  // main fleet
+  fleetShipsDataWithEscapeSelectorFactory(0),
+  // escort fleet
+  fleetShipsDataWithEscapeSelectorFactory(1),
+  (fleets, sortie, combinedFlag, mainFleetInfo, escortFleetInfo) => {
+    if (combinedFlag > 0) {
+      const countShips = raw => {
+        const counted = _.countBy(raw, r => {
+          const shipId = _.get(r, ['0', 'api_id'])
+          return _.isFinite(shipId) && shipId > 0
+        })
+        return _.get(counted, [true], 0)
+      }
+      const ret = [countShips(mainFleetInfo),countShips(escortFleetInfo)]
+      return ret
+    }
+    // TODO: escaping is not yet handled for single fleet.
     return _.flatMap(sortie.sortieStatus, (sortieFlag, fleetIdx) => {
       if (!sortieFlag)
         return []
@@ -98,9 +117,28 @@ const formationTypeSelector = createSelector(
   vanguardPresenceSelector,
   sortieShipsCountSelector,
   forceSingleFleetSelector,
-  (combinedFlag, hasVanguard, sortieShipsCount, forceSingleFleet) => {
-    if (combinedFlag > 0 && !forceSingleFleet)
-      return 'Combined'
+  (combinedFlag, hasVanguard, sortieShipsCountInp, forceSingleFleet) => {
+    let sortieShipsCount = sortieShipsCountInp
+    if (combinedFlag > 0) {
+      // in this case sortieShipsCountInp is an array.
+      if (!forceSingleFleet) {
+        /*
+           TODO:
+           - Cruising Formation 3 "Requires 5+ ships in escort fleet"
+           - Cruising Formation 4 "Requires 4+ ships in escort fleet."
+         */
+        return 'Combined'
+      }
+      // extract number from the escort fleet.
+      if (!Array.isArray(sortieShipsCount) || sortieShipsCount !== 2) {
+        console.warn(`Unexpected sortieShipsCount: ${sortieShipsCount}`)
+      }
+      const [_mainCount, escortCount] = sortieShipsCount
+      if (!_.isFinite(escortCount)) {
+        console.warn(`Unexpected sortieShipsCount[1]: ${escortCount}`)
+      }
+      sortieShipsCount = escortCount
+    }
     if (sortieShipsCount < 4)
       return 'None'
     const prefix =
