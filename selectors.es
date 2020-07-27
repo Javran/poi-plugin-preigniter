@@ -103,13 +103,16 @@ const sortieShipsCountSelector = createSelector(
 
 /*
   Returns one of (all of which are strings):
+  Note: In the context of Combined fleet, "CF" is short for "Cruising Formation".
 
   - None
   - Single
   - SingleHasDiamond
   - SingleHasVanguard
   - SingleHasDiamondHasVanguard
-  - Combined
+  - Combined (CF1 + CF2)
+  - CombinedHasCF3HasCF4 (CF1 + CF2 + CF3 + CF4)
+  - CombinedHasCF4 (CF1 + CF2 + CF4)
 
  */
 const formationTypeSelector = createSelector(
@@ -120,22 +123,25 @@ const formationTypeSelector = createSelector(
   (combinedFlag, hasVanguard, sortieShipsCountInp, forceSingleFleet) => {
     let sortieShipsCount = sortieShipsCountInp
     if (combinedFlag > 0) {
-      // in this case sortieShipsCountInp is an array.
-      if (!forceSingleFleet) {
-        /*
-           TODO:
-           - Cruising Formation 3 "Requires 5+ ships in escort fleet"
-           - Cruising Formation 4 "Requires 4+ ships in escort fleet."
-         */
-        return 'Combined'
-      }
       // extract number from the escort fleet.
       if (!Array.isArray(sortieShipsCount) || sortieShipsCount !== 2) {
         console.warn(`Unexpected sortieShipsCount: ${sortieShipsCount}`)
       }
       const [_mainCount, escortCount] = sortieShipsCount
       if (!_.isFinite(escortCount)) {
-        console.warn(`Unexpected sortieShipsCount[1]: ${escortCount}`)
+        console.warn(`Unexpected escortCount: ${escortCount}`)
+      }
+      // in this case sortieShipsCountInp is an array.
+      if (!forceSingleFleet) {
+        if (escortCount >= 5) {
+          // CF3 requires 5+ ships in escort fleet, which also implies CF4.
+          return 'CombinedHasCF3HasCF4'
+        }
+        if (escortCount >= 4) {
+          // CF4 requires 4+ ships in escort fleet.
+          return 'CombinedHasCF4'
+        }
+        return 'Combined'
       }
       sortieShipsCount = escortCount
     }

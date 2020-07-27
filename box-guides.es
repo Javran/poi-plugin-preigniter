@@ -69,7 +69,7 @@ const boxGuidesInfo = (() => {
     ...secondLineWithVanguard,
   ].map(btnSingle)
 
-  const Combined = [
+  const firstLineCombined = [
     {
       formation: 'Cruising Formation 1',
       x: 646, y: 242,
@@ -78,14 +78,24 @@ const boxGuidesInfo = (() => {
       formation: 'Cruising Formation 2',
       x: 893, y: 242,
     },
-    {
-      formation: 'Cruising Formation 3',
-      x: 646, y: 448,
-    },
-    {
-      formation: 'Cruising Formation 4',
-      x: 893, y: 448,
-    },
+  ]
+  const posCF3 = {
+    formation: 'Cruising Formation 3',
+    x: 646, y: 448,
+  }
+  const posCF4 = {
+    formation: 'Cruising Formation 4',
+    x: 893, y: 448,
+  }
+
+  const Combined = firstLineCombined.map(btnCombined)
+  const CombinedHasCF3HasCF4 = [
+    ...firstLineCombined,
+    posCF3, posCF4,
+  ].map(btnCombined)
+  const CombinedHasCF4 = [
+    ...firstLineCombined,
+    posCF4,
   ].map(btnCombined)
   return {
     // None is left undefined intentionally.
@@ -94,6 +104,8 @@ const boxGuidesInfo = (() => {
     SingleHasVanguard,
     SingleHasDiamondHasVanguard,
     Combined,
+    CombinedHasCF3HasCF4,
+    CombinedHasCF4,
   }
 })()
 
