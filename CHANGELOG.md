@@ -1,3 +1,7 @@
+# 0.0.4
+
+- Initial support for combined fleets.
+
 # 0.0.3
 
 - Started CHANGELOG.
