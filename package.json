@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-preigniter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Experimental drawing on top of the game view.",
   "main": "index.es",
   "scripts": {
