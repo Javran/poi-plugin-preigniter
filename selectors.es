@@ -124,7 +124,7 @@ const formationTypeSelector = createSelector(
     let sortieShipsCount = sortieShipsCountInp
     if (combinedFlag > 0) {
       // extract number from the escort fleet.
-      if (!Array.isArray(sortieShipsCount) || sortieShipsCount !== 2) {
+      if (!Array.isArray(sortieShipsCount) || sortieShipsCount.length !== 2) {
         console.warn(`Unexpected sortieShipsCount: ${sortieShipsCount}`)
       }
       const [_mainCount, escortCount] = sortieShipsCount
