@@ -1,3 +1,7 @@
+# Unreleased
+
+- Support for formations without vanguard.
+
 # 0.0.4
 
 - Initial support for combined fleets.

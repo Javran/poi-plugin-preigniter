@@ -12,12 +12,21 @@ const boxGuidesInfo = (() => {
     width: 144, height: 38,
   })
 
-  /* eslint-disable */
   const btnCombined = obj => ({
     ...obj,
     width: 204, height: 39,
   })
-  /* eslint-enable */
+
+  const firstLine = [
+    {
+      formation: 'LineAhead',
+      x: 599, y: 259,
+    },
+    {
+      formation: 'DoubleLine',
+      x: 794, y: 259,
+    },
+  ]
 
   const firstLineWithVanguard = [
     {
@@ -30,7 +39,7 @@ const boxGuidesInfo = (() => {
     },
   ]
 
-  const firstLineWithDiamondWithVanguard = [
+  const firstLineWithDiamond = [
     {
       formation: 'LineAhead',
       x: 599, y: 259,
@@ -42,6 +51,19 @@ const boxGuidesInfo = (() => {
     {
       formation: 'Diamond',
       x: 992, y: 259,
+    },
+  ]
+
+  const firstLineWithDiamondWithVanguard = firstLineWithDiamond
+
+  const secondLine = [
+    {
+      formation: 'Echelon',
+      x: 701, y: 497,
+    },
+    {
+      formation: 'LineAbreast',
+      x: 897, y: 497,
     },
   ]
 
@@ -60,6 +82,14 @@ const boxGuidesInfo = (() => {
     },
   ]
 
+  const Single = [
+    ...firstLine,
+    ...secondLine,
+  ].map(btnSingle)
+  const SingleHasDiamond = [
+    ...firstLineWithDiamond,
+    ...secondLine,
+  ].map(btnSingle)
   const SingleHasDiamondHasVanguard = [
     ...firstLineWithDiamondWithVanguard,
     ...secondLineWithVanguard,
@@ -99,8 +129,8 @@ const boxGuidesInfo = (() => {
   ].map(btnCombined)
   return {
     // None is left undefined intentionally.
-    // TODO: Single
-    // TODO: SingleHasDiamond
+    Single,
+    SingleHasDiamond,
     SingleHasVanguard,
     SingleHasDiamondHasVanguard,
     Combined,
