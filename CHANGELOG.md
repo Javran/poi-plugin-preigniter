@@ -1,3 +1,7 @@
+# Pending
+
+- Fix a problem when sortieing striking force which combined fleet is set.
+
 # 0.0.5
 
 - Support for formations without vanguard.

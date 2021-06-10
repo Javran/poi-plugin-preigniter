@@ -6,6 +6,7 @@ import {
   configSelector as poiConfigSelector,
   constSelector,
   sortieSelector,
+  sortieStatusSelector,
   fleetsSelector,
   fcdSelector,
   layoutSelector,
@@ -62,6 +63,13 @@ const combinedFlagSelector = createSelector(
   }
 )
 
+const currentSortieWithCombinedFleetSelector = createSelector(
+  sortieStatusSelector,
+  sortieStatus =>
+    _.get(sortieStatus, 0) === true &&
+    _.get(sortieStatus, 1) === true
+)
+
 /*
   The type of the return value changes depending on whether this is a combined fleet:
 
@@ -79,8 +87,13 @@ const sortieShipsCountSelector = createSelector(
   fleetShipsDataWithEscapeSelectorFactory(0),
   // escort fleet
   fleetShipsDataWithEscapeSelectorFactory(1),
-  (fleets, sortie, combinedFlag, mainFleetInfo, escortFleetInfo) => {
-    if (combinedFlag > 0) {
+  currentSortieWithCombinedFleetSelector,
+  (
+    fleets, sortie, combinedFlag,
+    mainFleetInfo, escortFleetInfo,
+    currentSortieWithCombinedFleet
+  ) => {
+    if (combinedFlag > 0 && currentSortieWithCombinedFleet) {
       const countShips = raw => {
         const counted = _.countBy(raw, r => {
           const shipId = _.get(r, ['0', 'api_id'])
@@ -120,9 +133,13 @@ const formationTypeSelector = createSelector(
   vanguardPresenceSelector,
   sortieShipsCountSelector,
   forceSingleFleetSelector,
-  (combinedFlag, hasVanguard, sortieShipsCountInp, forceSingleFleet) => {
+  currentSortieWithCombinedFleetSelector,
+  (
+    combinedFlag, hasVanguard, sortieShipsCountInp, forceSingleFleet,
+    currentSortieWithCombinedFleet
+  ) => {
     let sortieShipsCount = sortieShipsCountInp
-    if (combinedFlag > 0) {
+    if (combinedFlag > 0 && currentSortieWithCombinedFleet) {
       // extract number from the escort fleet.
       if (!Array.isArray(sortieShipsCount) || sortieShipsCount.length !== 2) {
         console.warn(`Unexpected sortieShipsCount: ${sortieShipsCount}`)
