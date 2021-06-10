@@ -1,4 +1,4 @@
-# Pending
+# 0.0.6
 
 - Fix a problem when sortieing striking force which combined fleet is set.
 
