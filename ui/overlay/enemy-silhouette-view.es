@@ -1,6 +1,10 @@
 import _ from 'lodash'
 import React, {PureComponent} from 'react'
+import { createSelector } from 'reselect'
 import { connect } from 'react-redux'
+import {
+  constSelector,
+} from 'views/utils/selectors'
 import {
   onSortieScreenSelector,
   enemyFleetPreviewSelector,
@@ -8,10 +12,26 @@ import {
 
 import { PTyp } from '@x/ptyp'
 
+const renderShipNameSelector = createSelector(
+  constSelector,
+  kcConst => {
+    const $ships = _.get(kcConst, '$ships')
+    if (_.isEmpty($ships)) {
+      return shipId => `#${shipId}`
+    }
+    return shipId =>
+      (
+        _.get($ships, [shipId, 'api_name'], null)
+        || `#${shipId}`
+      )
+  }
+)
+
 @connect(
   state => ({
     onSortieScreen: onSortieScreenSelector(state),
     enemyFleetPreview: enemyFleetPreviewSelector(state),
+    renderShipName: renderShipNameSelector(state),
   })
 )
 class EnemySilhouetteView extends PureComponent {
@@ -19,6 +39,7 @@ class EnemySilhouetteView extends PureComponent {
     // connected:
     onSortieScreen: PTyp.bool.isRequired,
     enemyFleetPreview: PTyp.array,
+    renderShipName: PTyp.func.isRequired,
   }
 
   static defaultProps = {
@@ -26,7 +47,7 @@ class EnemySilhouetteView extends PureComponent {
   }
 
   render() {
-    const {onSortieScreen, enemyFleetPreview} = this.props
+    const {onSortieScreen, enemyFleetPreview, renderShipName} = this.props
     if (!onSortieScreen || !Array.isArray(enemyFleetPreview)) {
       return null
     }
@@ -44,7 +65,7 @@ class EnemySilhouetteView extends PureComponent {
           alignItems: 'baseline',
         }}
       >
-        {_.join(enemyFleetPreview, ' ')}
+        {_.join(enemyFleetPreview.map(x => renderShipName(x)), ' ')}
       </div>
     )
   }
