@@ -8,7 +8,16 @@ const initState = {
   expectFormationSelection: false,
   // if true, forces single fleet overlay.
   forceSingleFleet: false,
+  enemyFleetPreview: null,
 }
+
+/*
+  Notes regarding api_e_deck_info:
+
+  - ref: EnemyDeckSilhouette
+    + it seems api_kind could be 1 or 2
+
+ */
 
 const reducer = (state = initState, action) => {
   if (action.type === '@poi-plugin-preigniter@Modify') {
@@ -30,6 +39,7 @@ const reducer = (state = initState, action) => {
       onSortieScreen: false,
       expectFormationSelection: false,
       forceSingleFleet: false,
+      enemyFleetPreview: null,
     }
   }
 
@@ -40,6 +50,13 @@ const reducer = (state = initState, action) => {
     ].indexOf(action.type) !== -1
   ) {
     const {body} = action
+    let enemyFleetPreview = null
+    const enemyPreviewRaw = _.get(body, ['api_e_deck_info'])
+    if (Array.isArray(enemyPreviewRaw) && enemyPreviewRaw.length > 0) {
+      // TODO: test this on combined fleets.
+      enemyFleetPreview = _.flatten(enemyPreviewRaw.map(raw => _.get(raw, ['api_ship_ids'], [])))
+    }
+
     /*
       Source: 74EO
       TODO: api_event_id also seems to play a role that
@@ -77,6 +94,7 @@ const reducer = (state = initState, action) => {
         onSortieScreen: true,
         expectFormationSelection: false,
         forceSingleFleet: false,
+        enemyFleetPreview,
       }
     default:
     }
@@ -87,6 +105,7 @@ const reducer = (state = initState, action) => {
         onSortieScreen: true,
         expectFormationSelection: false,
         forceSingleFleet: false,
+        enemyFleetPreview,
       }
     case 2:
     case 3:
@@ -98,7 +117,7 @@ const reducer = (state = initState, action) => {
         onSortieScreen: true,
         expectFormationSelection: true,
         forceSingleFleet: true,
-
+        enemyFleetPreview,
       }
     default:
       return {
@@ -106,6 +125,7 @@ const reducer = (state = initState, action) => {
         onSortieScreen: true,
         expectFormationSelection: true,
         forceSingleFleet: false,
+        enemyFleetPreview,
       }
     }
   }
