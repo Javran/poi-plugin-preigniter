@@ -27,6 +27,7 @@ const mkExtPropSelector = propName =>
 const onSortieScreenSelector = mkExtPropSelector('onSortieScreen')
 const forceSingleFleetSelector = mkExtPropSelector('forceSingleFleet')
 const expectFormationSelectionSelector = mkExtPropSelector('expectFormationSelection')
+const enemyFleetPreviewSelector = mkExtPropSelector('enemyFleetPreview')
 
 const gameScreenInfoSelector = createSelector(
   poiConfigSelector,
@@ -210,4 +211,5 @@ export {
   formationTypeSelector,
   spotHistorySelector,
   getSpotNameFuncSelector,
+  enemyFleetPreviewSelector,
 }

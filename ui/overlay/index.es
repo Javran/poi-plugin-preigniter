@@ -8,6 +8,7 @@ import {
 import { PTyp } from '@x/ptyp'
 import { FormationSelectionGuides } from './formation-selection-guides'
 import { RouteView } from './route-view'
+import { EnemySilhouetteView } from './enemy-silhouette-view'
 
 const { $ } = window
 
@@ -102,6 +103,7 @@ class OverlayRoot extends PureComponent {
       >
         <FormationSelectionGuides />
         <RouteView />
+        <EnemySilhouetteView />
       </div>
     )
     return ReactDOM.createPortal(
