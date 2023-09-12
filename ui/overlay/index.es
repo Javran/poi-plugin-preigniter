@@ -74,6 +74,7 @@ class OverlayRoot extends PureComponent {
       gameOriginalWidth,
     } = this.props
     const {gameTop, gameLeft} = this.state
+    const mismatched = gameOriginalWidth !== GAME_ORIGINAL_WIDTH
     if (
       /*
          Don't show up if original width breaks the assumption.
@@ -81,10 +82,14 @@ class OverlayRoot extends PureComponent {
          but I don't the effort is worth it - likely many other things
          will require adjustment prior to this anyways.
        */
-      gameOriginalWidth !== GAME_ORIGINAL_WIDTH ||
+      mismatched ||
       !this.gameView
-    )
+    ) {
+      if (mismatched) {
+        console.warn(`Unexpected width: ${gameOriginalWidth} vs ${GAME_ORIGINAL_WIDTH}`)
+      }
       return ''
+    }
     const ratio = gameDisplayWidth / GAME_ORIGINAL_WIDTH
     const OverlayRendered = (
       <div
