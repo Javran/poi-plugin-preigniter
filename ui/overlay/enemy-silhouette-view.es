@@ -14,6 +14,28 @@ import { PTyp } from '@x/ptyp'
 
 const isAbyssalShipMstId = x => x > 1500
 
+/* eslint-disable quote-props */
+const abyssalYomiAbbrs = {
+  'flagship': 'FS',
+  'elite': 'EL',
+}
+/* eslint-enable quote-props */
+
+const combineAbyssalYomi = (name, yomi) => {
+  if (!yomi || yomi === '-' || typeof yomi !== 'string') {
+    return name
+  }
+
+  const tr = abyssalYomiAbbrs[yomi]
+
+  if (_.isEmpty(tr)) {
+    // new stuff that we don't know how to translate
+    return `${name} ${yomi}`
+  }
+
+  return `${name} ${tr}`
+}
+
 const renderShipNameSelector = createSelector(
   constSelector,
   kcConst => {
@@ -29,14 +51,13 @@ const renderShipNameSelector = createSelector(
         return `#${shipId}`
       }
 
-      /*
-        abyssal may have extra info like "flagship" stored
-        in api_yomi, which should be displayed
-       */
-      const ym = _.get($ships, [shipId, 'api_yomi'], '')
-
       if (aby) {
-        return nm + ym
+        /*
+          abyssal may have extra info like "flagship" stored
+          in api_yomi, which should be displayed
+         */
+        const ym = _.get($ships, [shipId, 'api_yomi'], '')
+        return combineAbyssalYomi(nm, ym)
       }
 
       return nm
