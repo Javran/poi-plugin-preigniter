@@ -12,6 +12,8 @@ import {
 
 import { PTyp } from '@x/ptyp'
 
+const isAbyssalShipMstId = x => x > 1500
+
 const renderShipNameSelector = createSelector(
   constSelector,
   kcConst => {
@@ -19,11 +21,26 @@ const renderShipNameSelector = createSelector(
     if (_.isEmpty($ships)) {
       return shipId => `#${shipId}`
     }
-    return shipId =>
-      (
-        _.get($ships, [shipId, 'api_name'], null)
-        || `#${shipId}`
-      )
+    return shipId => {
+      const aby = isAbyssalShipMstId(shipId)
+      const nm = _.get($ships, [shipId, 'api_name'])
+
+      if (!nm || typeof nm !== 'string') {
+        return `#${shipId}`
+      }
+
+      /*
+        abyssal may have extra info like "flagship" stored
+        in api_yomi, which should be displayed
+       */
+      const ym = _.get($ships, [shipId, 'api_yomi'], '')
+
+      if (aby) {
+        return nm + ym
+      }
+
+      return nm
+    }
   }
 )
 
